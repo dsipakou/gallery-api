@@ -1,2 +1,5 @@
 *__pycache__*
 .python-version
+*/CACHE/*
+gallery/uploads/
+gallery/media/
