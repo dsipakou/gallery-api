@@ -1,3 +1,11 @@
-from django.shortcuts import render
+from rest_framework.generics import ListAPIView
 
-# Create your views here.
+from images.models import Image
+from images.serializers import ImageSerializer
+
+
+class ImageListView(ListAPIView):
+    serializer_class = ImageSerializer
+
+    def get_queryset(self):
+        return Image.objects.all()
