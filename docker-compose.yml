@@ -12,7 +12,7 @@ services:
     command: >
       bash -c "cd gallery
       && python manage.py migrate
-      && python manage.py runserver 0.0.0.0:8000"
+      && python manage.py runserver 0.0.0.0:8010"
     volumes:
       - .:/var/app
     ports:
