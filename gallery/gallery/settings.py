@@ -81,7 +81,7 @@ DATABASES = {
         'NAME': 'galleryapi',
         'USER': 'galleryapi',
         'PASSWORD': 'galleryapi',
-        'HOST': '127.0.0.1',
+        'HOST': 'db',
         'PORT': '5555',
     }
 }
