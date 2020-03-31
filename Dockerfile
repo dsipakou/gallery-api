@@ -6,4 +6,3 @@ WORKDIR ${APP_DIR}
 COPY requirements.txt ${APP_DIR}/requirements.txt
 COPY gallery/ ${APP_DIR}/gallery/
 RUN pip install -r requirements.txt
-
