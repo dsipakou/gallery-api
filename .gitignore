@@ -5,3 +5,4 @@ gallery/uploads/
 gallery/media/
 .idea/
 .vscode/
+.env-local
