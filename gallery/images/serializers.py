@@ -4,7 +4,7 @@ from images.models import Image
 
 
 class ImageSerializer(serializers.ModelSerializer):
-    thumbnail_image = serializers.ReadOnlyField(source='photo_preview.url')
+    photo_preview = serializers.ImageField(read_only=True)
 
     class Meta:
         model = Image
