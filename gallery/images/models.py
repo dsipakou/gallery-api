@@ -17,7 +17,7 @@ class Image(models.Model):
                                 processors=[ResizeToFit(1920, 1080)],
                                 format='PNG')
     photo_preview = ImageSpecField(source='photo',
-                                   processors=[ResizeToFit(100, 50)],
+                                   processors=[ResizeToCover(50, 50)],
                                    format='PNG')
     name = models.CharField(_('name'), max_length=80, blank=False)
     description = models.TextField(_('description'), max_length=8000, blank=True)
