@@ -7,6 +7,12 @@ services:
     build: ./db
     ports:
       - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "POSTGRES_PASSWORD=postgres pg_isready -U postgres"]
+      retries: 10
+      interval: 3s
+      timeout: 2s
+
   web:
     env_file:
       - .env
