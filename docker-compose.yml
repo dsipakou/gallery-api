@@ -18,7 +18,8 @@ services:
       - .env
     build: .
     command: >
-      bash -c "cd gallery
+      bash -c "sleep 7;
+      cd gallery
       && python manage.py migrate
       && python manage.py loaddata init.json
       && python manage.py runserver 0.0.0.0:8010"
