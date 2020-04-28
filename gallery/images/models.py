@@ -28,7 +28,7 @@ class Image(models.Model):
         return self.name
 
     def admin_image_tag(self):
-        return mark_safe('<img src="{}" />'.format(self.photo_preview.url))
+        return mark_safe('<img style="width: 150px;" src="{}" />'.format(self.photo_preview.url))
 
     admin_image_tag.short_desription = _('image short desc')
 
