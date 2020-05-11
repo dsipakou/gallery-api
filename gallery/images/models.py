@@ -32,6 +32,11 @@ class Image(models.Model):
 
     admin_image_tag.short_desription = _('image short desc')
 
+class Like(models.Model):
+    photo = models.ForeignKey(Image, on_delete=models.CASCADE)
+    ip_address = models.GenericIPAddressField(_('ip address'), null=False, blank=False)
+
+
 @receiver(signals.pre_save, sender=Image)
 def set_uuid_for_image(sender, instance=None, **kwargs):
     if instance and not instance.uuid:
