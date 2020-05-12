@@ -1,8 +1,9 @@
-from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework import status
+from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
 from rest_framework.response import Response
 
-from images.models import Image
-from images.serializers import ImageSerializer
+from images.models import Image, Like
+from images.serializers import ImageSerializer, LikeSerializer
 
 
 class ImageListView(ListAPIView):
@@ -20,3 +21,27 @@ class ImageView(RetrieveAPIView):
     def retrieve(self, request, *args, **kwargs):
         image = self.get_object()
         return Response(self.get_serializer(image).data)
+
+
+class LikeView(GenericAPIView):
+    serializer_class = LikeSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status.HTTP_201_CREATED)
+        return Response(status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+    def get(self, request, *args, **kwawrgs):
+        photo = Image.objects.get(uuid=request.GET['uuid'])
+        try:
+            like = Like.objects.get(photo=photo, ip_address=request.GET['ip_address'])
+        except Like.DoesNotExist:
+            like = None
+        if like is not None:
+            return Response(status.HTTP_200_OK)
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    def delete(self, request, *args, **kwargs):
+        return Response("hello")

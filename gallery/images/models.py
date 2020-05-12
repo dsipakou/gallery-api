@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Image(models.Model):
-    uuid = models.CharField(_('image uuid'), max_length=36, null=True, blank=True)
+    uuid = models.CharField(_('image uuid'), max_length=36, null=True, blank=True, unique=True)
     photo = ProcessedImageField(verbose_name=_('photo'),
                                 upload_to='uploads/gallery/images',
                                 processors=[ResizeToFit(1920, 1080)],
@@ -33,8 +33,11 @@ class Image(models.Model):
     admin_image_tag.short_desription = _('image short desc')
 
 class Like(models.Model):
-    photo = models.ForeignKey(Image, on_delete=models.CASCADE)
+    photo = models.ForeignKey(Image, on_delete=models.CASCADE, to_field='uuid')
     ip_address = models.GenericIPAddressField(_('ip address'), null=False, blank=False)
+
+    class Meta:
+        unique_together = (('photo', 'ip_address'),)
 
 
 @receiver(signals.pre_save, sender=Image)
