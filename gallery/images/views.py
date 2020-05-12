@@ -44,4 +44,9 @@ class LikeView(GenericAPIView):
         return Response(status.HTTP_404_NOT_FOUND)
 
     def delete(self, request, *args, **kwargs):
-        return Response("hello")
+        try:
+            Like.objects.get(**request.data).delete()
+            return Response(status.HTTP_204_NO_CONTENT)
+        except Like.DoesNotExist:
+            ...
+        return Response(status.HTTP_304_NOT_MODIFIED)
