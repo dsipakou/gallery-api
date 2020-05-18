@@ -1,5 +1,6 @@
 from rest_framework import status
-from rest_framework.generics import ListAPIView, RetrieveAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, RetrieveAPIView
+from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
 from images.models import Image, Like
@@ -12,6 +13,9 @@ class ImageListView(ListAPIView):
     def get_queryset(self):
         return Image.objects.all().order_by("date_created").reverse()[:5]
 
+    def list(self, request, *args, **kwargs):
+        return super().list(request, **kwargs)
+
 
 class ImageView(RetrieveAPIView):
     queryset = Image.objects.all()
@@ -23,7 +27,7 @@ class ImageView(RetrieveAPIView):
         return Response(self.get_serializer(image).data)
 
 
-class LikeView(GenericAPIView):
+class LikeView(GenericViewSet):
     serializer_class = LikeSerializer
 
     def post(self, request, *args, **kwargs):
@@ -33,10 +37,10 @@ class LikeView(GenericAPIView):
             return Response(status.HTTP_201_CREATED)
         return Response(status.HTTP_500_INTERNAL_SERVER_ERROR)
 
-    def get(self, request, *args, **kwawrgs):
-        photo = Image.objects.get(uuid=request.GET['uuid'])
+    def get(self, request, *args, **kwargs):
+        photo = Image.objects.get(uuid=kwargs.get('uuid'))
         try:
-            like = Like.objects.get(photo=photo, ip_address=request.GET['ip_address'])
+            like = Like.objects.get(photo=photo, ip_address=request.META['REMOTE_ADDR'])
         except Like.DoesNotExist:
             like = None
         if like is not None:
