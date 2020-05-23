@@ -30,27 +30,35 @@ class ImageView(RetrieveAPIView):
 class LikeView(GenericViewSet):
     serializer_class = LikeSerializer
 
-    def post(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status.HTTP_201_CREATED)
-        return Response(status.HTTP_500_INTERNAL_SERVER_ERROR)
+    def post(self, request, **kwargs):
+        data = request.data
+        data['ip_address'] = request.META['REMOTE_ADDR']
+        like = Like.objects.filter(**data)
+        if len(like) == 0:
+            serializer = self.get_serializer(data=data)
+            print(data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=status.HTTP_201_CREATED)
+            else:
+                print(serializer.errors)
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response(status=status.HTTP_304_NOT_MODIFIED)
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         photo = Image.objects.get(uuid=kwargs.get('uuid'))
         try:
             like = Like.objects.get(photo=photo, ip_address=request.META['REMOTE_ADDR'])
         except Like.DoesNotExist:
             like = None
         if like is not None:
-            return Response(status.HTTP_200_OK)
-        return Response(status.HTTP_404_NOT_FOUND)
+            return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
-    def delete(self, request, *args, **kwargs):
+    def delete(self, request):
         try:
             Like.objects.get(**request.data).delete()
-            return Response(status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Like.DoesNotExist:
             ...
-        return Response(status.HTTP_304_NOT_MODIFIED)
+        return Response(status=status.HTTP_304_NOT_MODIFIED)
