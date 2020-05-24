@@ -58,7 +58,8 @@ class LikeView(GenericViewSet):
     def delete(self, request):
         try:
             Like.objects.get(**request.data).delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
         except Like.DoesNotExist:
             ...
+        finally:
+            return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_304_NOT_MODIFIED)
