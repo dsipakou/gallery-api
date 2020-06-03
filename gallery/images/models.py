@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models import signals
 from django.dispatch import receiver
 from django.utils.safestring import mark_safe
+from django.utils.timezone import now
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, ResizeToCover
 from django.utils.translation import ugettext_lazy as _
@@ -21,6 +22,7 @@ class Image(models.Model):
                                    format='PNG')
     name = models.CharField(_('name'), max_length=80, blank=False)
     description = models.TextField(_('description'), max_length=8000, blank=True)
+    date = models.DateTimeField(_('picture date'), default=now())
     date_created = models.DateTimeField(_('date created'), auto_created=True, auto_now_add=True)
     date_updated = models.DateTimeField(_('date updated'), auto_now=True)
 
