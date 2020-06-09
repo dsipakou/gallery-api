@@ -11,7 +11,7 @@ class ImageListView(ListAPIView):
     serializer_class = ImageSerializer
 
     def get_queryset(self):
-        return Image.objects.all().order_by("date_created").reverse()[:5]
+        return Image.objects.filter(show_later=False).order_by("date_created").reverse()[:5]
 
     def list(self, request, *args, **kwargs):
         return super().list(request, **kwargs)
@@ -27,6 +27,15 @@ class ImageView(RetrieveAPIView):
         return Response(self.get_serializer(image).data)
 
 
+class HotImageView(RetrieveAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+    def retrieve(self, request):
+        images = self.queryset.filter(show_later=True)
+        return Response(self.get_serializer(images[0]).data)
+
+
 class LikeView(GenericViewSet):
     serializer_class = LikeSerializer
 
@@ -36,7 +45,6 @@ class LikeView(GenericViewSet):
         like = Like.objects.filter(**data)
         if len(like) == 0:
             serializer = self.get_serializer(data=data)
-            print(data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(status=status.HTTP_201_CREATED)
