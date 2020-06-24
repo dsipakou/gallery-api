@@ -7,6 +7,8 @@ services:
     build: ./db
     ports:
       - "5432:5432"
+    volumes:
+      - ~/DockerDB/gallery-api:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "POSTGRES_PASSWORD=postgres pg_isready -U postgres"]
       retries: 10
