@@ -4,6 +4,7 @@ django-appconf==1.0.3
 django-cors-headers==3.2.1
 django-crontab==0.7.1
 django-imagekit==4.0.2
+django-storages==1.9.1
 djangorestframework==3.11.0
 pilkit==2.0
 Pillow==7.0.0
