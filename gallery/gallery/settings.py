@@ -45,8 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_crontab',
     'corsheaders',
+    'django_crontab',
     'rest_framework',
     'images',
     'storages',
@@ -105,6 +105,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
 )
+
+# Cron jobs
+
+CRONJOBS = [
+    ('*/1 * * * *', 'images.cron.update_images')
+]
 
 
 # Password validation
