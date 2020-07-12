@@ -32,8 +32,8 @@ class HotImageView(RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def retrieve(self, request):
-        images = self.queryset.filter(show_later=True)
-        return Response(self.get_serializer(images[0]).data)
+        image = self.queryset.latest('date_created')
+        return Response(self.get_serializer(image).data)
 
 
 class LikeView(GenericViewSet):
