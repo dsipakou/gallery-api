@@ -15,10 +15,10 @@ class Image(models.Model):
     uuid = models.CharField(_('image uuid'), max_length=36, null=True, blank=True, unique=True)
     photo = ProcessedImageField(verbose_name=_('photo'),
                                 upload_to='uploads/gallery/images',
-                                processors=[ResizeToFit(1920, 1080)],
+                                processors=[ResizeToFit(3200, 1800)],
                                 format='PNG')
     photo_preview = ImageSpecField(source='photo',
-                                   processors=[ResizeToCover(350, 350)],
+                                   processors=[ResizeToCover(400, 400)],
                                    format='PNG')
     name = models.CharField(_('name'), max_length=80, blank=False)
     description = models.TextField(_('description'), max_length=8000, blank=True)
