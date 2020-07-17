@@ -12,6 +12,12 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 
 import os
 
+def to_bool(value):
+    if value in (True, "True", "true", "yes", 1, "1"):
+        return True
+    if value in (None, False, "False", "false", "no", 0, "0"):
+        return False
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -23,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1s&hl##bk4q_1+!xs59*mj7ghc*r__2w%=@x9%=3)usn%im220'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = [os.environ['DEBUG']]
+DEBUG = to_bool(os.environ['DEBUG'])
 
 ALLOWED_HOSTS = [os.environ['ALLOWED_HOST']]
 
