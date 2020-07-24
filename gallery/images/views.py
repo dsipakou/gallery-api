@@ -1,20 +1,48 @@
+from images.models import Image, Like
+from images.serializers import (ImageByDateSerializer, ImageSerializer,
+                                LikeSerializer)
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
-from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
-
-from images.models import Image, Like
-from images.serializers import ImageSerializer, LikeSerializer
+from rest_framework.viewsets import GenericViewSet, ReadOnlyModelViewSet
 
 
-class ImageListView(ListAPIView):
+class ImageListView(ReadOnlyModelViewSet):
     serializer_class = ImageSerializer
 
     def get_queryset(self):
-        return Image.objects.filter(show_later=False).order_by("date_created").reverse()[:6]
+        return (
+            Image.objects.filter(show_later=False)
+            .order_by("date_created")
+            .reverse()[:6]
+        )
 
     def list(self, request, *args, **kwargs):
         return super().list(request, **kwargs)
+
+    def date_list(self, request, date, *args, **kwargs):
+        self.filter_queryset
+        serializer = ImageByDateSerializer(data={"date": date})
+        serializer.is_valid(raise_exception=True)
+        formated_date = serializer.validated_data["date"]
+
+        queryset = (
+            self.filter_queryset(
+                Image.objects.filter(show_later=False).filter(
+                    date_created__lte=formated_date
+                )
+            )
+            .order_by("date_created")
+            .reverse()[:6]
+        )
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = ImageByDateSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = ImageByDateSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class ImageView(RetrieveAPIView):
@@ -32,7 +60,7 @@ class HotImageView(RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def retrieve(self, request):
-        image = self.queryset.latest('date_created')
+        image = self.queryset.latest("date_created")
         return Response(self.get_serializer(image).data)
 
 
@@ -41,7 +69,7 @@ class LikeView(GenericViewSet):
 
     def post(self, request, **kwargs):
         data = request.data
-        data['ip_address'] = request.META['REMOTE_ADDR']
+        data["ip_address"] = request.META["REMOTE_ADDR"]
         like = Like.objects.filter(**data)
         if len(like) == 0:
             serializer = self.get_serializer(data=data)
@@ -54,9 +82,9 @@ class LikeView(GenericViewSet):
         return Response(status=status.HTTP_304_NOT_MODIFIED)
 
     def get(self, request, **kwargs):
-        photo = Image.objects.get(uuid=kwargs.get('uuid'))
+        photo = Image.objects.get(uuid=kwargs.get("uuid"))
         try:
-            like = Like.objects.get(photo=photo, ip_address=request.META['REMOTE_ADDR'])
+            like = Like.objects.get(photo=photo, ip_address=request.META["REMOTE_ADDR"])
         except Like.DoesNotExist:
             like = None
         if like is not None:
