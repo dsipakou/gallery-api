@@ -29,7 +29,7 @@ class ImageListView(ReadOnlyModelViewSet):
         queryset = (
             self.filter_queryset(
                 Image.objects.filter(show_later=False).filter(
-                    date_created__lte=formated_date
+                    date__lte=formated_date
                 )
             )
             .order_by("date_created")
