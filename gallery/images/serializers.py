@@ -9,19 +9,18 @@ class ImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Image
-        fields = '__all__'
+        fields = "__all__"
 
 
 class LikeSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Like
-        fields = '__all__'
+        fields = "__all__"
 
 
 class ImageByDateSerializer(serializers.Serializer):
     date = serializers.CharField()
 
     def validate_date(self, value):
-        validated_date = datetime.strptime(value, '%Y-%m')
+        validated_date = datetime.strptime(value, "%Y-%m")
         return validated_date

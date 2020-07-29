@@ -1,6 +1,5 @@
 from images.models import Image, Like
-from images.serializers import (ImageByDateSerializer, ImageSerializer,
-                                LikeSerializer)
+from images.serializers import ImageByDateSerializer, ImageSerializer, LikeSerializer
 from rest_framework import status
 from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.response import Response
@@ -28,9 +27,7 @@ class ImageListView(ReadOnlyModelViewSet):
 
         queryset = (
             self.filter_queryset(
-                Image.objects.filter(show_later=False).filter(
-                    date__lte=formated_date
-                )
+                Image.objects.filter(show_later=False).filter(date__lte=formated_date)
             )
             .order_by("date_created")
             .reverse()[:6]
