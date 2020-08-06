@@ -11,7 +11,7 @@ class ImageListView(ListAPIView):
     serializer_class = ImageSerializer
 
     def get_queryset(self):
-        return Image.objects.filter(show_later=False).order_by("date_created").reverse()[:6]
+        return Image.objects.filter(show_later=False).order_by("date_created")[:6]
 
     def list(self, request, *args, **kwargs):
         return super().list(request, **kwargs)
