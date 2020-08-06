@@ -32,7 +32,7 @@ class HotImageView(RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def retrieve(self, request):
-        image = self.queryset.latest('date_created')
+        image = self.queryset.latest("date_created")
         return Response(self.get_serializer(image).data)
 
 
@@ -41,7 +41,7 @@ class LikeView(GenericViewSet):
 
     def post(self, request, **kwargs):
         data = request.data
-        data['ip_address'] = request.META['REMOTE_ADDR']
+        data["ip_address"] = request.META["REMOTE_ADDR"]
         like = Like.objects.filter(**data)
         if len(like) == 0:
             serializer = self.get_serializer(data=data)
@@ -54,9 +54,9 @@ class LikeView(GenericViewSet):
         return Response(status=status.HTTP_304_NOT_MODIFIED)
 
     def get(self, request, **kwargs):
-        photo = Image.objects.get(uuid=kwargs.get('uuid'))
+        photo = Image.objects.get(uuid=kwargs.get("uuid"))
         try:
-            like = Like.objects.get(photo=photo, ip_address=request.META['REMOTE_ADDR'])
+            like = Like.objects.get(photo=photo, ip_address=request.META["REMOTE_ADDR"])
         except Like.DoesNotExist:
             like = None
         if like is not None:

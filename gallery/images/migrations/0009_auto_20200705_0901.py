@@ -8,13 +8,16 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('images', '0008_auto_20200705_0831'),
+        ("images", "0008_auto_20200705_0831"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='image',
-            name='date',
-            field=models.DateTimeField(default=datetime.datetime(2020, 7, 5, 9, 1, 41, 311403, tzinfo=utc), verbose_name='picture date'),
+            model_name="image",
+            name="date",
+            field=models.DateTimeField(
+                default=datetime.datetime(2020, 7, 5, 9, 1, 41, 311403, tzinfo=utc),
+                verbose_name="picture date",
+            ),
         ),
     ]

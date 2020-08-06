@@ -8,19 +8,22 @@ from django.utils.timezone import utc
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('images', '0006_image_date'),
+        ("images", "0006_image_date"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='image',
-            name='show_later',
-            field=models.BooleanField(default=False, verbose_name='latest picture'),
+            model_name="image",
+            name="show_later",
+            field=models.BooleanField(default=False, verbose_name="latest picture"),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='image',
-            name='date',
-            field=models.DateTimeField(default=datetime.datetime(2020, 6, 9, 14, 57, 6, 726120, tzinfo=utc), verbose_name='picture date'),
+            model_name="image",
+            name="date",
+            field=models.DateTimeField(
+                default=datetime.datetime(2020, 6, 9, 14, 57, 6, 726120, tzinfo=utc),
+                verbose_name="picture date",
+            ),
         ),
     ]
