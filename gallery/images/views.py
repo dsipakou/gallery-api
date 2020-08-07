@@ -13,7 +13,7 @@ class ImageListView(ListAPIView):
     def get_queryset(self):
         return (
             Image.objects.filter(show_later=False)
-            .order_by("date_created").reverse()[:6][::-1]
+            .order_by("date").reverse()[:6][::-1]
         )
 
     def list(self, request, *args, **kwargs):
@@ -35,7 +35,7 @@ class HotImageView(RetrieveAPIView):
     serializer_class = ImageSerializer
 
     def retrieve(self, request):
-        image = self.queryset.latest("date_created")
+        image = self.queryset.latest("date")
         return Response(self.get_serializer(image).data)
 
 
