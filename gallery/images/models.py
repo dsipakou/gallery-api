@@ -47,6 +47,9 @@ class Image(models.Model):
 class Like(models.Model):
     photo = models.ForeignKey(Image, on_delete=models.CASCADE, to_field="uuid")
     ip_address = models.GenericIPAddressField(_("ip address"), null=False, blank=False)
+    date_created = models.DateTimeField(
+        _("date created"), auto_created=True, auto_now_add=True
+    )
 
     class Meta:
         unique_together = (("photo", "ip_address"),)
