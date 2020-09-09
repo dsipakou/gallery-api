@@ -3,6 +3,9 @@ from rest_framework.generics import ListAPIView, RetrieveAPIView
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.response import Response
 
+from datetime import datetime
+import dateutil.relativedelta as rd
+
 from images.models import Image, Like
 from images.serializers import ImageSerializer, LikeSerializer
 
@@ -14,6 +17,23 @@ class ImageListView(ListAPIView):
         return Image.objects.filter(show_later=False).order_by("date").reverse()[:6]
 
     def list(self, request, *args, **kwargs):
+        return super().list(request, **kwargs)
+
+
+class ImageArchiveListView(ListAPIView):
+    serializer_class = ImageSerializer
+
+    def get_queryset(self):
+        return (
+            Image.objects.filter(show_later=False, date__lte=self.date)
+            .order_by("date")
+            .reverse()[:6]
+        )
+
+    def list(self, request, year, month, *args, **kwargs):
+        self.date = datetime.strptime(f"{year}/{month}", "%Y/%m") + rd.relativedelta(
+            months=1
+        )
         return super().list(request, **kwargs)
 
 
