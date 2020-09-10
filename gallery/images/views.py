@@ -23,6 +23,9 @@ class ImageListView(ListAPIView):
 class ImageArchiveListView(ListAPIView):
     serializer_class = ImageSerializer
 
+    def _get_next_month(self, *, year, month):
+        return datetime.strptime(f"{year}/{month}") + rd.relativedelta(months=1)
+
     def get_queryset(self):
         return (
             Image.objects.filter(show_later=False, date__lte=self.date)
@@ -31,9 +34,7 @@ class ImageArchiveListView(ListAPIView):
         )
 
     def list(self, request, year, month, *args, **kwargs):
-        self.date = datetime.strptime(f"{year}/{month}) + rd.relativedelta(
-            months=1
-        )
+        self.date = self._get_next_month(year, month)
         return super().list(request, **kwargs)
 
 
