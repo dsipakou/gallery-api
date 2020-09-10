@@ -31,7 +31,7 @@ class ImageArchiveListView(ListAPIView):
         )
 
     def list(self, request, year, month, *args, **kwargs):
-        self.date = datetime.strptime(f"{year}/{month}", "%Y/%m") + rd.relativedelta(
+        self.date = datetime.strptime(f"{year}/{month}) + rd.relativedelta(
             months=1
         )
         return super().list(request, **kwargs)
