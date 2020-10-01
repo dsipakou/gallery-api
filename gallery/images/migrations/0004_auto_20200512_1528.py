@@ -11,6 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterUniqueTogether(
-            name="like", unique_together={("photo", "ip_address")},
+            name="like",
+            unique_together={("photo", "ip_address")},
         ),
     ]
