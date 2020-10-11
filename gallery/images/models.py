@@ -27,7 +27,7 @@ class Image(models.Model):
     name = models.CharField(_("name"), max_length=80, blank=False)
     description = models.TextField(_("description"), max_length=8000, blank=True)
     show_later = models.BooleanField(_("latest picture"), blank=False)
-    date = models.DateTimeField(_("picture date"), auto_now_add=True)
+    date = models.DateTimeField(_("picture date"), blank=False)
     date_created = models.DateTimeField(
         _("date created"), auto_created=True, auto_now_add=True
     )
