@@ -6,6 +6,18 @@ authors = ["Denis Sipakov <mc.flyer@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
+Django = "^3.1.4"
+celery = "^5.0.5"
+django-cors-headers = "^3.6.0"
+django-crontab = "^0.7.1"
+djangorestframework = "^3.12.2"
+s3transfer = "^0.3.3"
+django-imagekit = "^4.0.2"
+django-storages = "^1.11.1"
+psycopg2-binary = "^2.8.6"
+shortuuid = "^1.0.1"
+Pillow = "^8.0.1"
+boto3 = "^1.16.43"
 
 [tool.poetry.dev-dependencies]
 
