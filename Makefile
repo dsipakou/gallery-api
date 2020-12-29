@@ -10,3 +10,11 @@ install-packages:
 
 .PHONY: install
 install: install-poetry install-packages
+
+.PHONY: run-local
+run-local:
+	env $$(cat .env-local | xargs) poetry run python gallery/manage.py runserver 0.0.0.0:8010
+
+.PHONY: run-prod
+run-prod:
+	poetry run python gallery/manage.py runserver 0.0.0.0:8010

@@ -1,10 +1,18 @@
-FROM python:3.7-slim-stretch
+FROM python:3.8.3-slim-buster
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends make curl \
+    && rm -rf /var/lib/apt/lists/*
 
 ENV PYTHONUNBUFFERED 1
 EXPOSE 8010
 ARG APP_DIR=/var/app
+ENV PYTHONPATH=${APP_DIR}
 WORKDIR ${APP_DIR}
-COPY requirements.txt ${APP_DIR}/requirements.txt
+RUN curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python
+ENV PATH=/root/.poetry/bin:${PATH}
+
+COPY poetry.lock Makefile pyproject.toml ./
 COPY gallery/ ${APP_DIR}/gallery/
-RUN pip install -r requirements.txt
-CMD [ "python", "gallery/manage.py", "runserver", "0.0.0.0:8010" ]
+RUN make install
+CMD ["make", "run-prod"]
