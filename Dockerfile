@@ -1,9 +1,12 @@
 FROM python:3.8.3-slim-buster
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends make curl \
+    && apt-get install -y --no-install-recommends make curl supervisor \
     && rm -rf /var/lib/apt/lists/*
 
+ENV VIRTUAL_ENV=/opt/venv
+RUN python3 -m venv $VIRTUAL_ENV
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
 ENV PYTHONUNBUFFERED 1
 EXPOSE 8010
 ARG APP_DIR=/var/app
