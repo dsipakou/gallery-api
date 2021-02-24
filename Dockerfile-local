@@ -17,5 +17,9 @@ ENV PATH=/root/.poetry/bin:${PATH}
 
 COPY poetry.lock Makefile pyproject.toml .env-local ./
 COPY gallery/ ${APP_DIR}/gallery/
+COPY supervisor/ /etc/supervisor/conf.d/
+RUN mkdir -p /var/log/celery/
+RUN touch /var/log/celery/gallery_worker.log
+RUN touch /var/log/celery/gallery_beat.log
 RUN make install
 CMD ["make", "run-local"]
