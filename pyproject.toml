@@ -7,7 +7,7 @@ authors = ["Denis Sipakov <mc.flyer@gmail.com>"]
 [tool.poetry.dependencies]
 python = "^3.7"
 Django = "^3.1.4"
-celery = "^5.0.5"
+celery = "^5.2.2"
 django-cors-headers = "^3.6.0"
 django-crontab = "^0.7.1"
 djangorestframework = "^3.12.2"
